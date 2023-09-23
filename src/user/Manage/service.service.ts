@@ -1,5 +1,5 @@
 // service.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateServiceDto } from './dto/create.service.dto';
@@ -14,6 +14,15 @@ export class ServiceService {
 
   async getAllByUserId(userId: number): Promise<Service[]> {
     return this.serviceRepository.find({ where: { user_id: userId } });
+  }
+
+  async getByServiceId(serviceId: number): Promise<Service> {
+    try {
+      const service = await this.serviceRepository.findOneById(serviceId);
+      return service;
+    } catch (error) {
+      throw new NotFoundException(`Service with ID ${serviceId} not found`);
+    }
   }
 
   async createService(createServiceDto: CreateServiceDto): Promise<Service> {
