@@ -10,7 +10,7 @@ export class Service {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
   id: number;
 
-  @Column({ type: 'bigint', unsigned: true })
+  @Column({ type: 'bigint' })
   user_id: number;
 
   @Column({ length: 191, default: '0' })
