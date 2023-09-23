@@ -21,5 +21,8 @@ export class ServiceService {
     return await this.serviceRepository.save(service);
   }
 
+  async getAll(): Promise<Service[]> {
+    return this.serviceRepository.find({});
+  }
   // Add other service methods as needed
 }
