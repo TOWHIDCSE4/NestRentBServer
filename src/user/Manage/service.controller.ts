@@ -22,6 +22,18 @@ export class ServiceController {
       data: services,
     };
   }
+  @Get()
+  async getAll() {
+    const services = await this.serviceService.getAll();
+
+    return {
+      code: 200,
+      success: true,
+      msg_code: 'SUCCESS',
+      msg: 'Success',
+      data: services,
+    };
+  }
 
   @Post()
   async create(@Body() createServiceDto: CreateServiceDto): Promise<Service> {
