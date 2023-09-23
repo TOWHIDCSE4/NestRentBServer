@@ -1,76 +1,35 @@
-import { Module, OnModuleInit, ValidationPipe } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_PIPE, ModuleRef } from '@nestjs/core';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import {
-  addTransactionalDataSource,
-  initializeTransactionalContext,
-} from 'typeorm-transactional';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { bullConfig } from './common/config/bull.config';
-import { dataSource } from '../data-source';
 import { AuthModule } from './auth/auth.module';
-import globalConfig, { GlobalConfig } from './common/config/global.config';
-import { TIME_ZONE } from './common/constants/global.constant';
-import { AppEnvironment } from './common/enums/app.enum';
-import { AllExceptionsFilter } from './common/filters/all.filter';
-import { ServiceSellModule } from './service-sell/service-sell.module';
+import { User } from './auth/entities/user.entity';
+import { Service } from './user/Manage/entities/service.entity';
+import { ServiceModule } from './user/Manage/service.module';
 import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
-    // RedisModule.forRootAsync(redisConfig),
-    EventEmitterModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [() => globalConfig],
-      cache: true,
+      envFilePath: '.env',
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({}),
-      dataSourceFactory: async () => {
-        initializeTransactionalContext();
-        return addTransactionalDataSource(dataSource);
-      },
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_DATABASE,
+      entities: [User, Service],
+      synchronize: true,
     }),
-    UtilsModule,
     AuthModule,
-    ServiceSellModule,
+    UtilsModule,
+    ServiceModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-
-    {
-      provide: APP_PIPE,
-      useValue: new ValidationPipe({
-        transform: true,
-        transformOptions: { exposeDefaultValues: true },
-      }),
-    },
-    { provide: APP_FILTER, useClass: AllExceptionsFilter },
-  ],
+  providers: [AppService],
 })
-export class AppModule implements OnModuleInit {
-  constructor(
-    private configService: ConfigService<GlobalConfig>,
-    private moduleRef: ModuleRef,
-  ) {}
-
-  async onModuleInit() {
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.tz.setDefault(TIME_ZONE);
-
-    const isLocalOrTest = [AppEnvironment.LOCAL, AppEnvironment.TEST].includes(
-      this.configService.get('environment'),
-    );
-
-    if (isLocalOrTest) return;
-  }
-}
+export class AppModule {}
