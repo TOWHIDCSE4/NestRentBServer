@@ -6,11 +6,11 @@ import { Service } from './entities/service.entity';
 import { ServiceService } from './service.service';
 
 @ApiTags('Services')
-@Controller('user/manage')
+@Controller('user/manage/services')
 export class ServiceController {
   constructor(private readonly serviceService: ServiceService) {}
 
-  @Get('/services/' + ':userId')
+  @Get('/by/' + ':userId')
   async getAllByUserId(@Param('userId') userId: number) {
     const services = await this.serviceService.getAllByUserId(userId);
 
@@ -23,7 +23,7 @@ export class ServiceController {
     };
   }
 
-  @Get('/services')
+  @Get()
   async getAll() {
     const services = await this.serviceService.getAll();
 
@@ -36,16 +36,16 @@ export class ServiceController {
     };
   }
 
-  @Post('/services')
+  @Post()
   async create(@Body() createServiceDto: CreateServiceDto): Promise<Service> {
     const service = await this.serviceService.createService(createServiceDto);
 
     return service;
   }
 
-  @Get('/mo_services/motel_id/' + ':mo_service_id')
-  async getAllByServiceId(@Param('mo_service_id') mo_service_id: number) {
-    const services = await this.serviceService.getByServiceId(mo_service_id);
+  @Get(':service_id')
+  async getInfoByServiceId(@Param('service_id') service_id: number) {
+    const services = await this.serviceService.getByServiceId(service_id);
 
     return {
       code: 200,
