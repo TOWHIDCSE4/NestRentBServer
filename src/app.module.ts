@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entities/user.entity';
 import { Service } from './user/Manage/entities/service.entity';
+import { MoService } from './user/Manage/MoService/entity/mo-service';
+import { MoServiceModule } from './user/Manage/MoService/mo-service.module';
 import { ServiceModule } from './user/Manage/service.module';
 import { UtilsModule } from './utils/utils.module';
 
@@ -22,12 +24,13 @@ import { UtilsModule } from './utils/utils.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_DATABASE,
-      entities: [User, Service],
+      entities: [User, Service, MoService],
       synchronize: true,
     }),
     AuthModule,
     UtilsModule,
     ServiceModule,
+    MoServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
