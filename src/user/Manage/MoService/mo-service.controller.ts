@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Get,
   NotFoundException,
   Param,
   Put,
@@ -31,6 +32,32 @@ export class MoServiceController {
         msg_code: 'SUCCESS',
         msg: 'Success',
         data: service,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return {
+          code: 404,
+          success: true,
+          msg_code: 'BAD REQUEST',
+          msg: 'Mo Service Not Found with that Id',
+          data: null,
+        };
+      }
+    }
+  }
+
+  @Get('motel_id/' + ':mo_service_id')
+  async getInfoByServiceId(@Param('mo_service_id') mo_service_id: number) {
+    try {
+      const services = await this.MosSrviceService.getByMoServiceId(
+        mo_service_id,
+      );
+      return {
+        code: 200,
+        success: true,
+        msg_code: 'SUCCESS',
+        msg: 'Success',
+        data: services,
       };
     } catch (error) {
       if (error instanceof NotFoundException) {
