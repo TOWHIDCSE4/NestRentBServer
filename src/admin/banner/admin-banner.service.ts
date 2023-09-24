@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateBannerDto } from './dto/create-banner.dto';
 import { DBAdminBanner } from './entity/admin-banner.entity';
 
 @Injectable()
@@ -22,5 +23,17 @@ export class AdminBannerService {
       },
     });
     return banner;
+  }
+
+  async create(createBannerDto: CreateBannerDto): Promise<DBAdminBanner> {
+    const { image_url, title, action_link } = createBannerDto;
+
+    const newBanner = this.bannerRepository.create({
+      image_url,
+      title,
+      action_link,
+    });
+
+    return await this.bannerRepository.save(newBanner);
   }
 }

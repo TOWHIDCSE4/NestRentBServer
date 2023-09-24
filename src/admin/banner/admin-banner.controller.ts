@@ -1,8 +1,9 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MsgCode } from '../../shared/constants/message.constants';
 import { QueryResponseDto } from '../../shared/dto/query-response.dto';
 import { AdminBannerService } from './admin-banner.service';
+import { CreateBannerDto } from './dto/create-banner.dto';
 
 @ApiTags('Admin Banners')
 @Controller('admin/banners')
@@ -30,6 +31,30 @@ export class AdminBannerController {
       MsgCode.SUCCESS[0],
       MsgCode.SUCCESS[1],
       banner,
+    );
+  }
+
+  @Post()
+  async create(@Body() createBannerDto: CreateBannerDto) {
+    if (!createBannerDto.image_url) {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.BANNER_MUST_REQUIRE_IMAGE[0],
+        MsgCode.SUCCESS[1],
+      );
+    }
+
+    // Create the banner using the service
+    const createdBanner = await this.bannerService.create(createBannerDto);
+
+    // Return a success response
+    return new QueryResponseDto(
+      HttpStatus.OK,
+      true,
+      MsgCode.SUCCESS[0],
+      MsgCode.SUCCESS[1],
+      createdBanner,
     );
   }
 }
