@@ -44,4 +44,17 @@ export class MoServiceService {
     moServiceExist.type_unit = updateMoServiceDto.type_unit;
     return this.moServiceRepository.save(moServiceExist);
   }
+
+  async getByMoServiceId(moServiceId: number): Promise<MoService> {
+    try {
+      const service = await this.moServiceRepository.findOneById(moServiceId);
+      if (service === null)
+        throw new NotFoundException(
+          `Mo Service with ID ${moServiceId} not found`,
+        );
+      return service;
+    } catch (error) {
+      throw new NotFoundException(`Error in getting the service`);
+    }
+  }
 }
