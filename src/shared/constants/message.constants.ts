@@ -4,4 +4,5 @@ export const MsgCode = {
     'BANNER_MUST_REQUIRE_IMAGE',
     'Banner phải có ảnh đính kèm',
   ],
+  NO_BANNER_EXISTS: ['NO_BANNER_EXISTS', 'Banner không tồn tại'],
 };

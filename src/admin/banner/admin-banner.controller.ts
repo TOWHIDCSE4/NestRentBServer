@@ -1,9 +1,19 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MsgCode } from '../../shared/constants/message.constants';
 import { QueryResponseDto } from '../../shared/dto/query-response.dto';
 import { AdminBannerService } from './admin-banner.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
+import { UpdateBannerDto } from './dto/update-banner.dto';
 
 @ApiTags('Admin Banners')
 @Controller('admin/banners')
@@ -56,5 +66,31 @@ export class AdminBannerController {
       MsgCode.SUCCESS[1],
       createdBanner,
     );
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updateBannerDto: UpdateBannerDto,
+  ) {
+    try {
+      const banner = await this.bannerService.update(id, updateBannerDto);
+      return new QueryResponseDto(
+        HttpStatus.OK,
+        true,
+        MsgCode.SUCCESS[0],
+        MsgCode.SUCCESS[1],
+        banner,
+      );
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return new QueryResponseDto(
+          HttpStatus.BAD_REQUEST,
+          false,
+          MsgCode.NO_BANNER_EXISTS[0],
+          MsgCode.NO_BANNER_EXISTS[1],
+        );
+      }
+    }
   }
 }
