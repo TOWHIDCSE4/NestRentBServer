@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   NotFoundException,
@@ -13,6 +14,7 @@ import { MsgCode } from '../../shared/constants/message.constants';
 import { QueryResponseDto } from '../../shared/dto/query-response.dto';
 import { AdminBannerService } from './admin-banner.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
+import { DeleteBannerDto } from './dto/delete-banners.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
 
 @ApiTags('Admin Banners')
@@ -92,5 +94,32 @@ export class AdminBannerController {
         );
       }
     }
+  }
+
+  @Delete()
+  async delete(@Body() deleteBannerDto: DeleteBannerDto) {
+    if (
+      !Array.isArray(deleteBannerDto.list_id_banner) ||
+      deleteBannerDto.list_id_banner.length === 0
+    ) {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.INVALID_LIST_ID_BANNER[0],
+        MsgCode.INVALID_LIST_ID_BANNER[1],
+      );
+    }
+
+    const IdDeleted = await this.bannerService.deleteByIds(
+      deleteBannerDto.list_id_banner,
+    );
+
+    return new QueryResponseDto(
+      HttpStatus.OK,
+      true,
+      MsgCode.SUCCESS[0],
+      MsgCode.SUCCESS[1],
+      { list_id_banner_deleted: IdDeleted },
+    );
   }
 }

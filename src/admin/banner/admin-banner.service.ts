@@ -65,4 +65,21 @@ export class AdminBannerService {
 
     return this.bannerRepository.save(bannerExist);
   }
+
+  async deleteByIds(ids: number[]): Promise<number[]> {
+    const IdDeleted: number[] = [];
+
+    for (const bannerId of ids) {
+      const existBanner = await this.bannerRepository.findOne({
+        where: {
+          id: bannerId,
+        },
+      });
+      if (existBanner) {
+        IdDeleted.push(existBanner.id);
+        await this.bannerRepository.remove(existBanner);
+      }
+    }
+    return IdDeleted;
+  }
 }
