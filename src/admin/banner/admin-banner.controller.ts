@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MsgCode } from '../../shared/constants/message.constants';
 import { QueryResponseDto } from '../../shared/dto/query-response.dto';
@@ -18,6 +18,18 @@ export class AdminBannerController {
       MsgCode.SUCCESS[0],
       MsgCode.SUCCESS[1],
       banners,
+    );
+  }
+
+  @Get(':bannerId')
+  async getBannerById(@Param('bannerId') bannerId: number): Promise<any> {
+    const banner = await this.bannerService.getById(bannerId);
+    return new QueryResponseDto(
+      HttpStatus.OK,
+      true,
+      MsgCode.SUCCESS[0],
+      MsgCode.SUCCESS[1],
+      banner,
     );
   }
 }

@@ -14,4 +14,13 @@ export class AdminBannerService {
     const banners = await this.bannerRepository.find({});
     return banners;
   }
+
+  async getById(bannerId: number) {
+    const banner = await this.bannerRepository.findOne({
+      where: {
+        id: bannerId,
+      },
+    });
+    return banner;
+  }
 }
