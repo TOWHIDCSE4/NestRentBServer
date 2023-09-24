@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminBannerModule } from './admin/banner/admin-banner.module';
+import { DBAdminBanner } from './admin/banner/entity/admin-banner.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -22,12 +24,13 @@ import { UtilsModule } from './utils/utils.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_DATABASE,
-      entities: [User, Service],
+      entities: [User, Service, DBAdminBanner],
       synchronize: true,
     }),
     AuthModule,
     UtilsModule,
     ServiceModule,
+    AdminBannerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
