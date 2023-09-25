@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { StatusCode } from '../../../common/constants/status-code.constant';
 import { UnauthorizedExc } from '../../../common/exceptions/custom.exception';
-import { SessionUsersRepository } from '../../repositories/session-users.repository';
-import { UserRepository } from '../../repositories/user.repository';
+import { SessionUsers } from '../../entities/session-users.entity';
+import { User } from '../../entities/user.entity';
 
 @Injectable()
-export class AuthUserService {
+export class AuthCustomerUserService {
   constructor(
-    private userRepo: UserRepository,
-    private sessionUsersRepo: SessionUsersRepository,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+    @InjectRepository(SessionUsers)
+    private sessionUsersRepo: Repository<SessionUsers>,
   ) {}
 
   async authorizeUser(token: string) {

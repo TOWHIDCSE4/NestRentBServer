@@ -1,4 +1,4 @@
-import { Action, Resource, ActionAbility } from '../enums/casl.enum';
+import { Action, ActionAbility, Resource } from '../enums/casl.enum';
 
 export interface IPolicies {
   action: Action;

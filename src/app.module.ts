@@ -6,7 +6,10 @@ import { DBAdminBanner } from './admin/banner/entity/admin-banner.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { OtpCodePhone } from './auth/entities/otp-code-phone';
+import { SessionUsers } from './auth/entities/session-users.entity';
 import { User } from './auth/entities/user.entity';
+import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
 import { Service } from './user/Manage/entities/service.entity';
 import { MoService } from './user/Manage/MoService/entity/mo-service';
 import { MoServiceModule } from './user/Manage/MoService/mo-service.module';
@@ -26,7 +29,15 @@ import { UtilsModule } from './utils/utils.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_DATABASE,
-      entities: [User, Service, DBAdminBanner, MoService],
+      entities: [
+        User,
+        Service,
+        DBAdminBanner,
+        MoService,
+        OtpCodePhone,
+        SessionUsers,
+        CategoryServiceSells,
+      ],
       synchronize: true,
     }),
     AuthModule,
