@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GlobalConfig } from '../common/config/global.config';
+import { Service } from '../user/Manage/entities/service.entity';
 import { UtilsModule } from '../utils/utils.module';
 import { AuthController } from './auth.controller';
 import { OtpCodePhone } from './entities/otp-code-phone';
@@ -26,7 +27,7 @@ import { AuthUserService } from './services/user/auth-user.service';
         },
       }),
     }),
-    TypeOrmModule.forFeature([User, OtpCodePhone, SessionUsers]),
+    TypeOrmModule.forFeature([User, OtpCodePhone, SessionUsers, Service]),
   ],
   controllers: [AuthController],
   providers: [AuthCustomerUserService, AuthCommonService, AuthUserService],

@@ -1,18 +1,15 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
-  @IsString({ message: 'Phone number must be a string' })
+  @ApiProperty()
   phone_number: string;
 
-  @IsOptional()
-  @IsString({ message: 'OTP must be a string' })
+  @ApiProperty()
   otp?: string;
 
-  @IsOptional()
-  @IsBoolean({ message: 'is_otp must be a boolean' })
+  @ApiProperty()
   is_otp?: boolean;
 
-  @IsOptional()
-  @IsString({ message: 'Password must be a string' })
+  @ApiProperty()
   password?: string;
 }

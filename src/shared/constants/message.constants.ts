@@ -21,4 +21,13 @@ export const MsgCode = {
   ACCOUNT_HAS_BEEN_BANNED: ['ACCOUNT_HAS_BEEN_BANNED', 'Tài khoản đã bị khóa'],
   NO_ACCOUNT_EXISTS: ['NO_ACCOUNT_EXISTS', 'Tài khoản không tồn tại'],
   WRONG_PASSWORD: ['WRONG_PASSWORD', 'Sai mật khẩu'],
+  INVALID_PHONE_NUMBER: ['INVALID_PHONE_NUMBER', 'Số điện thoại không hợp lệ'],
+  PHONE_NUMBER_ALREADY_EXISTS: [
+    'PHONE_NUMBER_ALREADY_EXISTS',
+    'Số điện thoại đã tồn tại',
+  ],
+  INVALID_REFERRAL_CODE: [
+    'INVALID_REFERRAL_CODE',
+    'Mã giới thiệu không hợp lệ',
+  ],
 };
