@@ -2,17 +2,22 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { GlobalConfig } from '../common/config/global.config';
-import { TypeOrmCustomModule } from '../common/typeorm-custom';
+import { Service } from '../user/Manage/entities/service.entity';
 import { UtilsModule } from '../utils/utils.module';
-import { SessionUsersRepository } from './repositories/session-users.repository';
-import { UserRepository } from './repositories/user.repository';
+import { AuthController } from './auth.controller';
+import { OtpCodePhone } from './entities/otp-code-phone';
+import { SessionUsers } from './entities/session-users.entity';
+import { User } from './entities/user.entity';
 import { AuthCommonService } from './services/common/auth.common.service';
-import { AuthUserService } from './services/customer/auth.customer.service';
+import { AuthCustomerUserService } from './services/customer/auth.customer.service';
+import { AuthUserService } from './services/user/auth-user.service';
 
 @Module({
   imports: [
     PassportModule,
+    UtilsModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService<GlobalConfig>) => ({
@@ -22,11 +27,10 @@ import { AuthUserService } from './services/customer/auth.customer.service';
         },
       }),
     }),
-    TypeOrmCustomModule.forFeature([UserRepository, SessionUsersRepository]),
-    UtilsModule,
+    TypeOrmModule.forFeature([User, OtpCodePhone, SessionUsers, Service]),
   ],
-  controllers: [],
-  providers: [AuthUserService, AuthCommonService],
-  exports: [AuthUserService],
+  controllers: [AuthController],
+  providers: [AuthCustomerUserService, AuthCommonService, AuthUserService],
+  exports: [AuthCustomerUserService],
 })
 export class AuthModule {}

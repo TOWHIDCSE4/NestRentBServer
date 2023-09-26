@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { StatusCode } from '../../common/constants/status-code.constant';
 import { UnauthorizedExc } from '../../common/exceptions/custom.exception';
-import { AuthUserService } from '../services/customer/auth.customer.service';
+import { AuthCustomerUserService } from '../services/customer/auth.customer.service';
 
 @Injectable()
 export class AdminGuards implements CanActivate {
-  constructor(private readonly authUserService: AuthUserService) {}
+  constructor(private readonly authUserService: AuthCustomerUserService) {}
   async canActivate(context: ExecutionContext) {
     try {
       const request = context.switchToHttp().getRequest();

@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -6,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 @Entity('services')
-export class Service {
+export class Service extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
   id: number;
 
