@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -50,6 +51,32 @@ export class MoServiceController {
   async getInfoByServiceId(@Param('mo_service_id') mo_service_id: number) {
     try {
       const services = await this.MosSrviceService.getByMoServiceId(
+        mo_service_id,
+      );
+      return {
+        code: 200,
+        success: true,
+        msg_code: 'SUCCESS',
+        msg: 'Success',
+        data: services,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return {
+          code: 404,
+          success: true,
+          msg_code: 'BAD REQUEST',
+          msg: 'Mo Service Not Found with that Id',
+          data: null,
+        };
+      }
+    }
+  }
+
+  @Delete(':mo_service_id')
+  async deleteByServiceId(@Param('mo_service_id') mo_service_id: number) {
+    try {
+      const services = await this.MosSrviceService.deleteByMoServiceId(
         mo_service_id,
       );
       return {
