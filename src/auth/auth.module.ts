@@ -7,6 +7,7 @@ import { GlobalConfig } from '../common/config/global.config';
 import { Service } from '../user/Manage/entities/service.entity';
 import { UtilsModule } from '../utils/utils.module';
 import { AuthController } from './auth.controller';
+import { OtpCodeEmail } from './entities/otp-code-email';
 import { OtpCodePhone } from './entities/otp-code-phone';
 import { SessionUsers } from './entities/session-users.entity';
 import { User } from './entities/user.entity';
@@ -27,7 +28,13 @@ import { AuthUserService } from './services/user/auth-user.service';
         },
       }),
     }),
-    TypeOrmModule.forFeature([User, OtpCodePhone, SessionUsers, Service]),
+    TypeOrmModule.forFeature([
+      User,
+      OtpCodePhone,
+      OtpCodeEmail,
+      SessionUsers,
+      Service,
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthCustomerUserService, AuthCommonService, AuthUserService],

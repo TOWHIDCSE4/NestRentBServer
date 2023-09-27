@@ -20,7 +20,7 @@ export class OtpCodePhone {
   @Column({ type: 'varchar', length: 191, nullable: true })
   phone: string | null;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true, name: 'time_generate' })
   time_generate: Date | null;
 
   @Column({ type: 'longtext', nullable: true })
