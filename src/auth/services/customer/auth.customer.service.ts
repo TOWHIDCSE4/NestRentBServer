@@ -5,7 +5,7 @@ import { SessionUsersRepository } from '../../repositories/session-users.reposit
 import { UserRepository } from '../../repositories/user.repository';
 
 @Injectable()
-export class AuthUserService {
+export class AuthCustomerUserService {
   constructor(
     private userRepo: UserRepository,
     private sessionUsersRepo: SessionUsersRepository,
@@ -40,9 +40,9 @@ export class AuthUserService {
       throw new UnauthorizedExc(StatusCode.INVALID_TOKEN);
     }
     const sessionUser = await this.sessionUsersRepo
-      .createQueryBuilder('sessionUser')
-      .where('sessionUser.token = :token', { token })
-      .orderBy('sessionUser.createdAt', 'DESC')
+      .createQueryBuilder('session_user')
+      .where('session_user.token = :token', { token })
+      .orderBy('session_user.created_at', 'DESC')
       .getOne();
 
     if (!sessionUser) {
@@ -52,10 +52,12 @@ export class AuthUserService {
     const user = await this.userRepo.findOneBy({
       id: sessionUser.user_id,
     });
+
     if (!user) {
       await this.sessionUsersRepo.delete(sessionUser);
       throw new UnauthorizedExc(StatusCode.NOT_HAVE_ACCESS_TOKEN);
     }
+
     if (!user.is_admin) {
       throw new UnauthorizedExc(StatusCode.NOT_HAVE_ACCESS_TOKEN);
     }

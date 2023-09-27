@@ -5,3 +5,7 @@ export enum AppEnvironment {
   STAGE = 'STAGE',
   PRODUCTION = 'PRODUCTION',
 }
+
+export enum EventEmitterName {
+  NOTIFICATION = 'NOTIFICATION',
+}

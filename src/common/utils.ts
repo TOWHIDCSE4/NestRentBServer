@@ -1,5 +1,7 @@
 import { parsePhoneNumber } from 'awesome-phonenumber';
+import { LIST_FOLDER } from './constants/global.constant';
 import secureRandom = require('random-number-csprng');
+const path = require('path');
 
 /**
  * Fisher-Yates Shuffle.
@@ -130,4 +132,45 @@ export function parseStringToJson(str: string) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export function getRealPath(relativePath: string) {
+  const absolutePath = path.resolve(__dirname, relativePath);
+  return absolutePath;
+}
+
+export function checkContainFolder(nameFolder = null) {
+  if (LIST_FOLDER.includes(nameFolder)) {
+    return nameFolder;
+  } else {
+    return null;
+  }
+}
+
+function randomUniqueString(length: number, str: string): string {
+  const numberUnique = genListUniqueRandomNumber(length, 0, str.length - 1);
+  let result = '';
+  numberUnique.forEach((num) => {
+    result += str[num];
+  });
+  return result;
+}
+
+export function generateTransactionID() {
+  const prefixLength = 2;
+  const uniqueStringLength = 5;
+
+  const prefixCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const prefix = randomUniqueString(prefixLength, prefixCharacters);
+  const uniqueString = randomUniqueString(uniqueStringLength, characters);
+
+  const timestamp = Math.round(Date.now() / 1000);
+
+  return `${prefix.toUpperCase()}${timestamp}${uniqueString.toUpperCase()}`;
+}
+
+export function generateRandomString(length = 8) {
+  const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  return randomUniqueString(length, characters);
 }

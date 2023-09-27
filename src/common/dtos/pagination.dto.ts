@@ -4,11 +4,10 @@ export abstract class PaginationReqDto {
   @IsValidNumber({ required: false, min: 1 })
   page?: number = 1;
 
-  @IsValidNumber({ required: false, min: 1, max: 100 })
+  @IsValidNumber({ required: false })
   limit?: number = 20;
 }
 
-// https://aalonso.dev/blog/how-to-generate-generics-dtos-with-nestjsswagger-422g
 export class PaginationResDto {
   items: any[];
 

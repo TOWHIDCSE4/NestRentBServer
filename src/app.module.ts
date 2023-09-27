@@ -13,19 +13,29 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 // import { bullConfig } from './common/config/bull.config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { dataSource } from '../data-source';
+import { AdminBannerModule } from './admin/banner/admin-banner.module';
 import { AuthModule } from './auth/auth.module';
 import globalConfig, { GlobalConfig } from './common/config/global.config';
 import { TIME_ZONE } from './common/constants/global.constant';
 import { AppEnvironment } from './common/enums/app.enum';
 import { AllExceptionsFilter } from './common/filters/all.filter';
+import { ExternalModule } from './external/external.module';
+import { MoServiceModule } from './mo-service/mo-service.module';
+import { NotificationModule } from './notification/notification.module';
 import { ServiceSellModule } from './service-sell/service-sell.module';
+import { ServiceModule } from './service/service.module';
+import { UserModule } from './user/user.module';
 import { UtilsModule } from './utils/utils.module';
+import { WithdrawalsModule } from './withdrawals/withdrawals.module';
 
 @Module({
   imports: [
     // RedisModule.forRootAsync(redisConfig),
+    // BullModule.forRootAsync(bullOptions),
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [() => globalConfig],
@@ -41,6 +51,13 @@ import { UtilsModule } from './utils/utils.module';
     UtilsModule,
     AuthModule,
     ServiceSellModule,
+    ExternalModule,
+    AdminBannerModule,
+    ServiceModule,
+    MoServiceModule,
+    UserModule,
+    WithdrawalsModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [

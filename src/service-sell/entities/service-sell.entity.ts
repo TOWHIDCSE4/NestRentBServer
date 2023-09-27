@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { CategoryServiceSells } from './category-service-sells.entity';
+import { ViewerServiceSell } from './viewer-service-sell.entity';
 
 @Entity('service_sells')
 export class ServiceSells extends BaseEntity {
@@ -50,7 +52,13 @@ export class ServiceSells extends BaseEntity {
   @Column({ name: 'category_service_sell_id', type: 'bigint' })
   category_service_sell_id: number;
 
-  @ManyToOne(() => CategoryServiceSells, (cate) => cate)
+  @ManyToOne(() => CategoryServiceSells, (cate) => cate.service_sells)
   @JoinColumn({ name: 'category_service_sell_id' })
   category_service_sell: CategoryServiceSells;
+
+  @OneToMany(
+    () => ViewerServiceSell,
+    (viewerServiceSell) => viewerServiceSell.service_sell,
+  )
+  viewer_service_sell: ViewerServiceSell[];
 }
