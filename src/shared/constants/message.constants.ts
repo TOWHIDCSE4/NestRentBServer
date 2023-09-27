@@ -30,4 +30,17 @@ export const MsgCode = {
     'INVALID_REFERRAL_CODE',
     'Mã giới thiệu không hợp lệ',
   ],
+  OTP_IS_REQUIRE: ['OTP_IS_REQUIRE', 'Mã otp không được để trống'],
+  PASSWORD_NOT_LESS_THAN_6_CHARACTERS: [
+    'PASSWORD_NOT_LESS_THAN_6_CHARACTERS',
+    'Mật khẩu phải lớn hơn 6 ký tự',
+  ],
+  NO_EMAIL_ACCOUNT_EXISTS_IN_SYSTEM: [
+    'NO_EMAIL_ACCOUNT_EXISTS_IN_SYSTEM',
+    'Email không tồn tại',
+  ],
+  PHONE_NUMBER_OR_EMAIL_IS_REQUIRED: [
+    'PHONE_NUMBER_OR_EMAIL_IS_REQUIRED',
+    'Số điện thoại hoặc email không được để trống',
+  ],
 };

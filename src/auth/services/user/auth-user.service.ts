@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
+import dayjs from 'dayjs';
 import { Repository } from 'typeorm';
 import { AccountRankDefineCode } from '../../../shared/constants/account-define-code';
 import { MsgCode } from '../../../shared/constants/message.constants';
@@ -10,9 +11,12 @@ import { ServiceUnitDefineCode } from '../../../shared/constants/service-unit-de
 import { DefinedStatusCode } from '../../../shared/constants/status-code.constants';
 import { QueryResponseDto } from '../../../shared/dto/query-response.dto';
 import { Service } from '../../../user/Manage/entities/service.entity';
+import { Helper } from '../../../utils/services/helper-utils';
 import { PhoneUtils } from '../../../utils/services/phone-utils';
 import { LoginDto } from '../../dtos/common/req/login-dto';
 import { RegistrationDto } from '../../dtos/registration.dto';
+import { ResetPasswordDto } from '../../dtos/reset-password.dto';
+import { OtpCodeEmail } from '../../entities/otp-code-email';
 import { OtpCodePhone } from '../../entities/otp-code-phone';
 import { SessionUsers } from '../../entities/session-users.entity';
 import { User } from '../../entities/user.entity';
@@ -24,6 +28,8 @@ export class AuthUserService {
     private userRepository: Repository<User>,
     @InjectRepository(OtpCodePhone)
     private otpCodePhoneRepository: Repository<OtpCodePhone>,
+    @InjectRepository(OtpCodeEmail)
+    private otpCodeEmailRepository: Repository<OtpCodeEmail>,
     @InjectRepository(SessionUsers)
     private sessionRepository: Repository<SessionUsers>,
     @InjectRepository(Service)
@@ -373,6 +379,196 @@ export class AuthUserService {
       MsgCode.SUCCESS[1],
       createdUser,
     );
+  }
+
+  async resetPassword(request: ResetPasswordDto) {
+    const otp = request.otp;
+
+    let user: User | null = null;
+    let email: string | null = null;
+    let phone: string | null = null;
+
+    if (!request.email_or_phone_number) {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.PHONE_NUMBER_OR_EMAIL_IS_REQUIRED[0],
+        MsgCode.PHONE_NUMBER_OR_EMAIL_IS_REQUIRED[1],
+      );
+    }
+
+    const isValidEmail = Helper.validEmail(request.email_or_phone_number);
+    if (isValidEmail) {
+      email = request.email_or_phone_number;
+      user = await this.userRepository.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!user) {
+        return new QueryResponseDto(
+          HttpStatus.BAD_REQUEST,
+          false,
+          MsgCode.NO_EMAIL_ACCOUNT_EXISTS_IN_SYSTEM[0],
+          MsgCode.NO_EMAIL_ACCOUNT_EXISTS_IN_SYSTEM[1],
+        );
+      }
+    } else if (PhoneUtils.isNumberPhoneValid(request.email_or_phone_number)) {
+      phone = PhoneUtils.convert(request.email_or_phone_number);
+      user = await this.userRepository.findOne({
+        where: {
+          phone_number: phone,
+        },
+      });
+
+      if (!user) {
+        return new QueryResponseDto(
+          HttpStatus.BAD_REQUEST,
+          false,
+          MsgCode.NO_PHONE_NUMBER_ACCOUNT_EXISTS_IN_SYSTEM[0],
+          MsgCode.NO_PHONE_NUMBER_ACCOUNT_EXISTS_IN_SYSTEM[1],
+        );
+      }
+    }
+
+    let from = '';
+    let type = '';
+    let otpExis: OtpCodeEmail | OtpCodePhone | null = null;
+
+    if (email != null && phone == null) {
+      from = email;
+      type = 'email';
+      otpExis = await this.otpCodeEmailRepository.findOne({
+        where: {
+          email: email,
+          otp: otp,
+        },
+      });
+
+      if (!otpExis) {
+        return new QueryResponseDto(
+          HttpStatus.BAD_REQUEST,
+          false,
+          MsgCode.INVALID_OTP[0],
+          MsgCode.INVALID_OTP[1],
+        );
+      }
+    } else if (email == null && phone != null) {
+      from = phone;
+      type = 'phone';
+      otpExis = await this.otpCodePhoneRepository.findOne({
+        where: {
+          phone: from,
+          otp: otp,
+        },
+      });
+
+      if (!otpExis) {
+        return new QueryResponseDto(
+          HttpStatus.BAD_REQUEST,
+          false,
+          MsgCode.INVALID_OTP[0],
+          MsgCode.INVALID_OTP[1],
+        );
+      }
+    } else {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.OTP_IS_REQUIRE[0],
+        MsgCode.OTP_IS_REQUIRE[1],
+      );
+    }
+
+    const isExpired = await this.hasExpiredOtp(from, type);
+    if (isExpired) {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.EXPIRED_PIN_CODE[0],
+        MsgCode.EXPIRED_PIN_CODE[1],
+      );
+    }
+
+    if (request.password.length < 6) {
+      return new QueryResponseDto(
+        HttpStatus.BAD_REQUEST,
+        false,
+        MsgCode.PASSWORD_NOT_LESS_THAN_6_CHARACTERS[0],
+        MsgCode.PASSWORD_NOT_LESS_THAN_6_CHARACTERS[1],
+      );
+    }
+
+    await this.sessionRepository.delete({ user_id: user.id });
+    await this.resetOtp(phone);
+
+    await this.userRepository.update(
+      { id: user.id },
+      { password: await bcrypt.hash(request.password, 10) },
+    );
+
+    return new QueryResponseDto(
+      HttpStatus.OK,
+      true,
+      MsgCode.SUCCESS[0],
+      MsgCode.SUCCESS[1],
+    );
+  }
+
+  private async resetOtp(phone: string) {
+    const otp = Helper.generateRandomNum(6);
+    const now = new Date();
+    const convertedPhone = PhoneUtils.convert(phone);
+
+    const existingOtp = await this.otpCodePhoneRepository.findOne({
+      where: {
+        phone: convertedPhone,
+      },
+    });
+
+    if (existingOtp) {
+      // Update existing OTP record
+      existingOtp.otp = otp;
+      existingOtp.time_generate = now;
+      await this.otpCodePhoneRepository.save(existingOtp);
+    } else {
+      // Create a new OTP record
+      const newOtp = this.otpCodePhoneRepository.create({
+        area_code: '+84',
+        otp,
+        phone: convertedPhone,
+        time_generate: now,
+      });
+      await this.otpCodePhoneRepository.save(newOtp);
+    }
+  }
+
+  private async hasExpiredOtp(
+    from: string,
+    type: string | null = null,
+  ): Promise<boolean> {
+    const now = Helper.getTimeNowString();
+    let otpExis: OtpCodeEmail | OtpCodePhone | null = null;
+
+    if (type === 'email') {
+      otpExis = await this.otpCodeEmailRepository.findOne({
+        where: { email: from },
+      });
+    } else {
+      otpExis = await this.otpCodePhoneRepository.findOne({
+        where: { phone: from },
+      });
+    }
+
+    if (otpExis === null) {
+      return false;
+    }
+
+    const time1 = dayjs(otpExis.time_generate.toString()).add(7, 'minute'); // Add 7 minutes to timeGenerate
+    const time2 = dayjs();
+
+    return time1.isBefore(time2);
   }
 
   private generateRandomString(length: number): string {

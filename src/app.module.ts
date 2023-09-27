@@ -6,6 +6,7 @@ import { DBAdminBanner } from './admin/banner/entity/admin-banner.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { OtpCodeEmail } from './auth/entities/otp-code-email';
 import { OtpCodePhone } from './auth/entities/otp-code-phone';
 import { SessionUsers } from './auth/entities/session-users.entity';
 import { User } from './auth/entities/user.entity';
@@ -39,6 +40,7 @@ import { UtilsModule } from './utils/utils.module';
         SessionUsers,
         CategoryServiceSells,
         ServiceSells,
+        OtpCodeEmail,
       ],
       synchronize: true,
     }),
