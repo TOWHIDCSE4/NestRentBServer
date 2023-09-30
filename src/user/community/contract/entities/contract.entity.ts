@@ -7,6 +7,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
+    OneToOne,
   } from 'typeorm';
 import { Motel } from './motel.entity';
 import { User } from '../../../../auth/entities/user.entity';
@@ -75,7 +76,7 @@ import { UserContract } from './user-contracts.entity';
     deposit_amount_paid: number;
   
     @Column({ type: 'longtext', nullable: true })
-    images_deposit: string | null;
+    images_deposit: string[];
   
     @Column({ type: 'longtext', nullable: true })
     furniture: string | null;
@@ -95,6 +96,6 @@ import { UserContract } from './user-contracts.entity';
     @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
     updated_at: Date;
 
-    @OneToMany(() => UserContract, (contract) => contract.user)
-    userContracts: UserContract[];
+    @OneToOne(() => UserContract, (contract) => contract.user)
+    userContracts: UserContract;
   }

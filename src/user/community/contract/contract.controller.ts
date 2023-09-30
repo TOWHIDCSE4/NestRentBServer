@@ -1,7 +1,8 @@
-import { Controller, Delete, Get, NotFoundException, Param, Query, Req, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Put, Query, Req, ValidationPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ContractQueryDto } from './dtos/contract.dto';
 import { ContractService } from './contract.service';
+import { UpdateContractDto } from './dtos/update-contract.dto';
 
 @ApiTags('Contract')
 @Controller('user/community/contract')
@@ -100,5 +101,14 @@ export class ContractController {
                 msg: 'Internal server error',
             };
         }
+    }
+
+    @Put(':id')
+    async updateContract(
+        @Param('id') id: number,
+        @Body() updateContractDto: UpdateContractDto,
+    ) {
+        const response = await this.contractService.updateContract(id, updateContractDto, updateContractDto.userPhoneNumber);
+        return response;
     }
 }
