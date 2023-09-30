@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ContractService } from './contract.service';
-import { ContractController } from './contract.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Motel } from './entities/motel.entity';
-import { Contract } from './entities/contract.entity';
 import { User } from '../../entties/user.entity';
+import { ContractController } from './contract.controller';
+import { ContractService } from './contract.service';
+import { Contract } from './entities/contract.entity';
+import { Motel } from './entities/motel.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Motel, Contract, User, ContractService])],

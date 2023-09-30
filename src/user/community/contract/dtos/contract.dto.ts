@@ -1,4 +1,10 @@
-import { IsOptional, IsNumber, IsString, IsBoolean, IsDate, IsEnum } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class ContractQueryDto {
   @IsOptional()

@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
+import { ItemCartServiceSell } from '../../user/community/entity/item-service-sell-entity';
 import { CategoryServiceSells } from './category-service-sells.entity';
 import { ViewerServiceSell } from './viewer-service-sell.entity';
 
@@ -61,4 +62,10 @@ export class ServiceSells extends BaseEntity {
     (viewerServiceSell) => viewerServiceSell.service_sell,
   )
   viewer_service_sell: ViewerServiceSell[];
+
+  @OneToMany(
+    () => ItemCartServiceSell,
+    (itemCartServiceSell) => itemCartServiceSell.serviceSell,
+  )
+  itemCartServiceSells: ItemCartServiceSell[];
 }

@@ -1,6 +1,6 @@
 // order-service-sell.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('order_service_sell')
 export class OrderServiceSell {
@@ -28,7 +28,11 @@ export class OrderServiceSell {
   @Column({ type: 'varchar', name: 'wards', length: 255 })
   wards: string;
 
-  @Column({ type: 'timestamp', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'timestamp',
+    name: 'created_at',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   created_at: Date;
 
   // Add more columns and relations as needed

@@ -31,8 +31,12 @@ export class OrderService {
     const orderQuery = this.orderRepository
       .createQueryBuilder('order')
       .where('order.user_id = :userId', { userId })
-      .andWhere('order.order_status = :orderStatus', { orderStatus: order_status })
-      .andWhere('order.payment_status = :paymentStatus', { paymentStatus: payment_status })
+      .andWhere('order.order_status = :orderStatus', {
+        orderStatus: order_status,
+      })
+      .andWhere('order.payment_status = :paymentStatus', {
+        paymentStatus: payment_status,
+      })
       .andWhere('order.province = :province', { province })
       .andWhere('order.district = :district', { district })
       .andWhere('order.wards = :wards', { wards })

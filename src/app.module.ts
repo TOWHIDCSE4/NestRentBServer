@@ -9,17 +9,23 @@ import { AuthModule } from './auth/auth.module';
 import { OtpCodePhone } from './auth/entities/otp-code-phone';
 import { SessionUsers } from './auth/entities/session-users.entity';
 import { User } from './auth/entities/user.entity';
-import { UtilsModule } from './utils/utils.module';
 import { MoService } from './mo-service/entities/mo-service';
 import { MoServiceModule } from './mo-service/mo-service.module';
+import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
+import { ServiceSells } from './service-sell/entities/service-sell.entity';
+import { ViewerServiceSell } from './service-sell/entities/viewer-service-sell.entity';
 import { Service } from './service/entities/service.entity';
 import { ServiceModule } from './service/service.module';
-import { Motel } from './user/community/contract/entities/motel.entity';
-import { Contract } from './user/community/contract/entities/contract.entity';
+import { CartServiceModule } from './user/community/cart-service-module';
 import { ContractModule } from './user/community/contract/contract.module';
+import { Contract } from './user/community/contract/entities/contract.entity';
+import { Motel } from './user/community/contract/entities/motel.entity';
 import { UserContract } from './user/community/contract/entities/user-contracts.entity';
-import { OrderSellModule } from './user/community/order/order-sell.module';
+import { ItemCartServiceSell } from './user/community/entity/item-service-sell-entity';
+import { LineItemServiceSell } from './user/community/entity/line_item_service_sell.entity';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
+import { OrderSellModule } from './user/community/order/order-sell.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -41,10 +47,15 @@ import { OrderServiceSell } from './user/community/order/order-sell.entity';
         MoService,
         OtpCodePhone,
         SessionUsers,
+        ItemCartServiceSell,
+        ServiceSells,
+        LineItemServiceSell,
+        CategoryServiceSells,
+        ViewerServiceSell,
         Motel,
         Contract,
         UserContract,
-        OrderServiceSell
+        OrderServiceSell,
       ],
       synchronize: true,
     }),
@@ -53,6 +64,7 @@ import { OrderServiceSell } from './user/community/order/order-sell.entity';
     ServiceModule,
     AdminBannerModule,
     MoServiceModule,
+    CartServiceModule,
     ContractModule,
     OrderSellModule,
   ],
