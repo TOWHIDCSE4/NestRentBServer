@@ -9,13 +9,14 @@ import { AuthModule } from './auth/auth.module';
 import { OtpCodePhone } from './auth/entities/otp-code-phone';
 import { SessionUsers } from './auth/entities/session-users.entity';
 import { User } from './auth/entities/user.entity';
-import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
-import { ServiceSells } from './service-sell/entities/service-sell.entity';
 import { UtilsModule } from './utils/utils.module';
 import { MoService } from './mo-service/entities/mo-service';
 import { MoServiceModule } from './mo-service/mo-service.module';
 import { Service } from './service/entities/service.entity';
 import { ServiceModule } from './service/service.module';
+import { Motel } from './user/community/contract/entities/motel.entity';
+import { Contract } from './user/community/contract/entities/contract.entity';
+import { ContractModule } from './user/community/contract/contract.module';
 
 @Module({
   imports: [
@@ -37,6 +38,8 @@ import { ServiceModule } from './service/service.module';
         MoService,
         OtpCodePhone,
         SessionUsers,
+        Motel,
+        Contract,
       ],
       synchronize: true,
     }),
@@ -45,6 +48,7 @@ import { ServiceModule } from './service/service.module';
     ServiceModule,
     AdminBannerModule,
     MoServiceModule,
+    ContractModule,
   ],
   controllers: [AppController],
   providers: [AppService],
