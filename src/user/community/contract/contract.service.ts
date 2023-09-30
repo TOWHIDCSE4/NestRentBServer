@@ -83,4 +83,23 @@ export class ContractService {
     return contract;
   }
 
+  async contractDelete(id: number, renterPhoneNumber: string): Promise<Contract> {
+    const contract = await this.contractRepository
+      .createQueryBuilder('contract')
+      .innerJoin('contract.userContracts', 'userContract')
+      .where('contract.id = :id', { id })
+      .andWhere('userContract.renterPhoneNumber = :renterPhoneNumber', {
+        renterPhoneNumber,
+      })
+      .getOne();
+
+    if (!contract) {
+      throw new NotFoundException('Contract not found');
+    }
+
+    await this.contractRepository.delete(id);
+
+    return contract;
+  }
+
 }
