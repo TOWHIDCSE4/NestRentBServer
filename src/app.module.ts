@@ -9,13 +9,17 @@ import { AuthModule } from './auth/auth.module';
 import { OtpCodePhone } from './auth/entities/otp-code-phone';
 import { SessionUsers } from './auth/entities/session-users.entity';
 import { User } from './auth/entities/user.entity';
-import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
-import { ServiceSells } from './service-sell/entities/service-sell.entity';
-import { UtilsModule } from './utils/utils.module';
 import { MoService } from './mo-service/entities/mo-service';
 import { MoServiceModule } from './mo-service/mo-service.module';
+import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
+import { ServiceSells } from './service-sell/entities/service-sell.entity';
+import { ViewerServiceSell } from './service-sell/entities/viewer-service-sell.entity';
 import { Service } from './service/entities/service.entity';
 import { ServiceModule } from './service/service.module';
+import { CartServiceModule } from './user/community/cart-service-module';
+import { ItemCartServiceSell } from './user/community/entity/item-service-sell-entity';
+import { LineItemServiceSell } from './user/community/entity/line_item_service_sell.entity';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -37,6 +41,11 @@ import { ServiceModule } from './service/service.module';
         MoService,
         OtpCodePhone,
         SessionUsers,
+        ItemCartServiceSell,
+        ServiceSells,
+        LineItemServiceSell,
+        CategoryServiceSells,
+        ViewerServiceSell,
       ],
       synchronize: true,
     }),
@@ -45,6 +54,7 @@ import { ServiceModule } from './service/service.module';
     ServiceModule,
     AdminBannerModule,
     MoServiceModule,
+    CartServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
