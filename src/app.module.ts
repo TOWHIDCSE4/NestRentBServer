@@ -18,6 +18,8 @@ import { Motel } from './user/community/contract/entities/motel.entity';
 import { Contract } from './user/community/contract/entities/contract.entity';
 import { ContractModule } from './user/community/contract/contract.module';
 import { UserContract } from './user/community/contract/entities/user-contracts.entity';
+import { OrderSellModule } from './user/community/order/order-sell.module';
+import { OrderServiceSell } from './user/community/order/order-sell.entity';
 
 @Module({
   imports: [
@@ -41,7 +43,8 @@ import { UserContract } from './user/community/contract/entities/user-contracts.
         SessionUsers,
         Motel,
         Contract,
-        UserContract
+        UserContract,
+        OrderServiceSell
       ],
       synchronize: true,
     }),
@@ -51,6 +54,7 @@ import { UserContract } from './user/community/contract/entities/user-contracts.
     AdminBannerModule,
     MoServiceModule,
     ContractModule,
+    OrderSellModule,
   ],
   controllers: [AppController],
   providers: [AppService],
