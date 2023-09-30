@@ -1,93 +1,52 @@
-import { Module, OnModuleInit, ValidationPipe } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_PIPE, ModuleRef } from '@nestjs/core';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import {
-  addTransactionalDataSource,
-  initializeTransactionalContext,
-} from 'typeorm-transactional';
+import { AdminBannerModule } from './admin/banner/admin-banner.module';
+import { DBAdminBanner } from './admin/banner/entity/admin-banner.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { bullConfig } from './common/config/bull.config';
-import { ScheduleModule } from '@nestjs/schedule';
-import { dataSource } from '../data-source';
-import { AdminBannerModule } from './admin/banner/admin-banner.module';
 import { AuthModule } from './auth/auth.module';
-import globalConfig, { GlobalConfig } from './common/config/global.config';
-import { TIME_ZONE } from './common/constants/global.constant';
-import { AppEnvironment } from './common/enums/app.enum';
-import { AllExceptionsFilter } from './common/filters/all.filter';
-import { ExternalModule } from './external/external.module';
-import { MoServiceModule } from './mo-service/mo-service.module';
-import { NotificationModule } from './notification/notification.module';
-import { ServiceSellModule } from './service-sell/service-sell.module';
-import { ServiceModule } from './service/service.module';
-import { UserModule } from './user/user.module';
+import { OtpCodePhone } from './auth/entities/otp-code-phone';
+import { SessionUsers } from './auth/entities/session-users.entity';
+import { User } from './auth/entities/user.entity';
+import { CategoryServiceSells } from './service-sell/entities/category-service-sells.entity';
+import { ServiceSells } from './service-sell/entities/service-sell.entity';
 import { UtilsModule } from './utils/utils.module';
-import { WithdrawalsModule } from './withdrawals/withdrawals.module';
+import { MoService } from './mo-service/entities/mo-service';
+import { MoServiceModule } from './mo-service/mo-service.module';
+import { Service } from './service/entities/service.entity';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
-    // RedisModule.forRootAsync(redisConfig),
-    // BullModule.forRootAsync(bullOptions),
-    EventEmitterModule.forRoot(),
-    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [() => globalConfig],
-      cache: true,
+      envFilePath: '.env',
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({}),
-      dataSourceFactory: async () => {
-        initializeTransactionalContext();
-        return addTransactionalDataSource(dataSource);
-      },
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_DATABASE,
+      entities: [
+        User,
+        Service,
+        DBAdminBanner,
+        MoService,
+        OtpCodePhone,
+        SessionUsers,
+      ],
+      synchronize: true,
     }),
-    UtilsModule,
     AuthModule,
-    ServiceSellModule,
-    ExternalModule,
-    AdminBannerModule,
+    UtilsModule,
     ServiceModule,
+    AdminBannerModule,
     MoServiceModule,
-    UserModule,
-    WithdrawalsModule,
-    NotificationModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-
-    {
-      provide: APP_PIPE,
-      useValue: new ValidationPipe({
-        transform: true,
-        transformOptions: { exposeDefaultValues: true },
-      }),
-    },
-    { provide: APP_FILTER, useClass: AllExceptionsFilter },
-  ],
+  providers: [AppService],
 })
-export class AppModule implements OnModuleInit {
-  constructor(
-    private configService: ConfigService<GlobalConfig>,
-    private moduleRef: ModuleRef,
-  ) {}
-
-  async onModuleInit() {
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.tz.setDefault(TIME_ZONE);
-
-    const isLocalOrTest = [AppEnvironment.LOCAL, AppEnvironment.TEST].includes(
-      this.configService.get('environment'),
-    );
-
-    if (isLocalOrTest) return;
-  }
-}
+export class AppModule {}
