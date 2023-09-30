@@ -1,5 +1,13 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Contract } from '../community/contract/entities/contract.entity';
+import { UserContract } from '../community/contract/entities/user-contracts.entity';
 
 @Entity('users')
 export class User {
@@ -112,6 +120,15 @@ export class User {
 
   @Column({ type: 'tinyint', default: 0 })
   initial_account_type: number;
+
+  @OneToMany(() => Contract, (contract) => contract.user)
+  contracts: Contract[];
+
+  @OneToMany(() => Contract, (contract) => contract.userMaker)
+  createdContracts: Contract[];
+
+  @OneToMany(() => UserContract, (contract) => contract.user)
+  userContracts: UserContract[];
 
   @Column({ type: 'timestamp', nullable: true })
   created_at: Date;

@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Contract } from '../../user/community/contract/entities/contract.entity';
+import { UserContract } from '../../user/community/contract/entities/user-contracts.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -103,4 +105,13 @@ export class User {
 
   @Column({ name: 'initial_account_type', type: 'tinyint', default: 0 })
   initial_account_type: number;
+
+  @OneToMany(() => Contract, (contract) => contract.user)
+  contracts: Contract[];
+
+  @OneToMany(() => UserContract, (contract) => contract.user)
+  userContracts: UserContract[];
+
+  @OneToMany(() => Contract, (contract) => contract.userMaker)
+  createdContracts: Contract[];
 }
