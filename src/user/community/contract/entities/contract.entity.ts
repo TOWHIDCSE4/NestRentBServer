@@ -6,9 +6,11 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToMany,
   } from 'typeorm';
 import { Motel } from './motel.entity';
 import { User } from '../../../../auth/entities/user.entity';
+import { UserContract } from './user-contracts.entity';
   
   @Entity('contracts')
   export class Contract {
@@ -92,4 +94,7 @@ import { User } from '../../../../auth/entities/user.entity';
   
     @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
     updated_at: Date;
+
+    @OneToMany(() => UserContract, (contract) => contract.user)
+    userContracts: UserContract[];
   }

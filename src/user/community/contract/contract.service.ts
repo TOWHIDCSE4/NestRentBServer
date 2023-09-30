@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractQueryDto } from './dtos/contract.dto';
@@ -64,6 +64,23 @@ export class ContractService {
 
     // Execute the query
     return query.getMany();
+  }
+
+  async getContractById(id: number, renterPhoneNumber: string): Promise<Contract> {
+    const contract = await this.contractRepository
+      .createQueryBuilder('contract')
+      .innerJoin('contract.userContracts', 'userContract')
+      .where('contract.id = :id', { id })
+      .andWhere('userContract.renterPhoneNumber = :renterPhoneNumber', {
+        renterPhoneNumber,
+      })
+      .getOne();
+
+    if (!contract) {
+      throw new NotFoundException('Contract not found');
+    }
+
+    return contract;
   }
 
 }

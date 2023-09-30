@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Contract } from '../community/contract/entities/contract.entity';
+import { UserContract } from '../community/contract/entities/user-contracts.entity';
 
 @Entity('users')
 export class User {
@@ -120,6 +121,9 @@ export class User {
   @OneToMany(() => Contract, (contract) => contract.userMaker)
   createdContracts: Contract[];
 
+  @OneToMany(() => UserContract, (contract) => contract.user)
+  userContracts: UserContract[];
+  
   @Column({ type: 'timestamp', nullable: true })
   created_at: Date;
 

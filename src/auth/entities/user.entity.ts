@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Contract } from '../../user/community/contract/entities/contract.entity';
+import { UserContract } from '../../user/community/contract/entities/user-contracts.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -107,6 +108,9 @@ export class User {
 
   @OneToMany(() => Contract, (contract) => contract.user)
   contracts: Contract[];
+
+  @OneToMany(() => UserContract, (contract) => contract.user)
+  userContracts: UserContract[];
 
   @OneToMany(() => Contract, (contract) => contract.userMaker)
   createdContracts: Contract[];

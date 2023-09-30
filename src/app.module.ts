@@ -17,6 +17,7 @@ import { ServiceModule } from './service/service.module';
 import { Motel } from './user/community/contract/entities/motel.entity';
 import { Contract } from './user/community/contract/entities/contract.entity';
 import { ContractModule } from './user/community/contract/contract.module';
+import { UserContract } from './user/community/contract/entities/user-contracts.entity';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ContractModule } from './user/community/contract/contract.module';
         SessionUsers,
         Motel,
         Contract,
+        UserContract
       ],
       synchronize: true,
     }),

@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
   } from 'typeorm';
   import { Contract } from './contract.entity'; // Import your Contract entity
+import { UserContract } from './user-contracts.entity';
   
   @Entity('motels')
   export class Motel {
@@ -29,4 +30,7 @@ import {
   
     @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
     updated_at: Date;
+
+    @OneToMany(() => UserContract, (contract) => contract.user)
+    userContracts: UserContract[];
   }

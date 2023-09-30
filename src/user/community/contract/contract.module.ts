@@ -7,7 +7,7 @@ import { Contract } from './entities/contract.entity';
 import { User } from '../../entties/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Motel, Contract, User])],
+  imports: [TypeOrmModule.forFeature([Motel, Contract, User, ContractService])],
   controllers: [ContractController],
   providers: [ContractService],
   exports: [],
