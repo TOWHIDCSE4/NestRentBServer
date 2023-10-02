@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -16,7 +17,11 @@ export class ItemCartServiceSell {
   @Column({ type: 'bigint' }) // Define the relationship with the User entity
   user_id: number;
 
+  @Column({ name: 'service_sell_id', type: 'bigint' }) // Define the foreign key column name
+  serviceSellId: number;
+
   @ManyToOne(() => ServiceSells, { eager: true }) // Define the relationship with the ServiceSell entity
+  @JoinColumn({ name: 'service_sell_id' })
   serviceSell: ServiceSells;
 
   @Column({ default: 1 })

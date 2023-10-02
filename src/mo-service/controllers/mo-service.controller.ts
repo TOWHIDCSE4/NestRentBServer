@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -70,5 +71,20 @@ export class MoServiceController {
         };
       }
     }
+  }
+
+  @Delete(':mo_service_id')
+  async delete(@Param('mo_service_id') mo_service_id: number) {
+    const services = await this.MosSrviceService.deleteByMoServiceId(
+      mo_service_id,
+    );
+
+    return {
+      code: 200,
+      success: true,
+      msg_code: 'SUCCESS',
+      msg: 'Success',
+      data: services,
+    };
   }
 }
