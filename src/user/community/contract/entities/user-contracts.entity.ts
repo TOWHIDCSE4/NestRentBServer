@@ -24,7 +24,7 @@ export class UserContract {
   @JoinColumn({ name: 'motel_id' })
   motel: Motel;
 
-  @ManyToOne(() => Contract, (contract) => contract.userContracts)
+  @ManyToOne(() => Contract, (contract) => contract.userContract)
   @JoinColumn({ name: 'contract_id' })
   contract: Contract;
 
@@ -34,9 +34,9 @@ export class UserContract {
   @Column({ type: 'tinyint', default: 0, name: 'is_represent' })
   isRepresent: number;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

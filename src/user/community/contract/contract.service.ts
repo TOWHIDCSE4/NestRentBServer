@@ -26,8 +26,9 @@ export class ContractService {
       search,
     } = queryDto;
 
-    const query = await this.contractRepository.createQueryBuilder('contract');
-
+    const query = await this.contractRepository
+      .createQueryBuilder('contract')
+      .innerJoinAndSelect('contract.userContract', 'userContract');
     // Apply filters based on queryDto
     if (dateFrom) {
       query.where('contract.created_at >= :dateFrom', { dateFrom });
@@ -89,7 +90,7 @@ export class ContractService {
   ): Promise<Contract> {
     const contract = await this.contractRepository
       .createQueryBuilder('contract')
-      .innerJoin('contract.userContracts', 'userContract')
+      .innerJoinAndSelect('contract.userContract', 'userContract')
       .where('contract.id = :id', { id })
       .andWhere('userContract.renterPhoneNumber = :renterPhoneNumber', {
         renterPhoneNumber,
@@ -109,7 +110,7 @@ export class ContractService {
   ): Promise<Contract> {
     const contract = await this.contractRepository
       .createQueryBuilder('contract')
-      .innerJoin('contract.userContracts', 'userContract')
+      .innerJoin('contract.userContract', 'userContract')
       .where('contract.id = :id', { id })
       .andWhere('userContract.renterPhoneNumber = :renterPhoneNumber', {
         renterPhoneNumber,
@@ -131,7 +132,7 @@ export class ContractService {
     userPhoneNumber: string,
   ): Promise<any> {
     const contract: Contract = await this.contractRepository.findOne({
-      relations: ['user_contracts'],
+      relations: ['userContract'],
       where: {
         id: id,
       },

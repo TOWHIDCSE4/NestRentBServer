@@ -30,18 +30,45 @@ export class OrderService {
 
     const orderQuery = this.orderRepository
       .createQueryBuilder('order')
-      .where('order.user_id = :userId', { userId })
-      .andWhere('order.order_status = :orderStatus', {
+      .where('order.user_id = :userId', { userId });
+
+    if (order_status) {
+      orderQuery.andWhere('order.order_status = :orderStatus', {
         orderStatus: order_status,
-      })
-      .andWhere('order.payment_status = :paymentStatus', {
+      });
+    }
+
+    if (payment_status) {
+      orderQuery.andWhere('order.payment_status = :paymentStatus', {
         paymentStatus: payment_status,
-      })
-      .andWhere('order.province = :province', { province })
-      .andWhere('order.district = :district', { district })
-      .andWhere('order.wards = :wards', { wards })
-      .andWhere('order.total_final >= :moneyFrom', { moneyFrom: money_from })
-      .andWhere('order.total_final <= :moneyTo', { moneyTo: money_to })
+      });
+    }
+
+    if (province) {
+      orderQuery.andWhere('order.province = :province', { province });
+    }
+
+    if (district) {
+      orderQuery.andWhere('order.district = :district', { district });
+    }
+
+    if (wards) {
+      orderQuery.andWhere('order.wards = :wards', { wards });
+    }
+
+    if (money_from) {
+      orderQuery.andWhere('order.total_final >= :moneyFrom', {
+        moneyFrom: money_from,
+      });
+    }
+
+    if (money_to) {
+      orderQuery.andWhere('order.total_final <= :moneyTo', {
+        moneyTo: money_to,
+      });
+    }
+
+    orderQuery
       .orderBy(`order.${sort_by}`, descending ? 'DESC' : 'ASC')
       .take(limit);
 

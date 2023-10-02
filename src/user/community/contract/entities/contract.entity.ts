@@ -95,6 +95,6 @@ export class Contract {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updated_at: Date;
 
-  @OneToOne(() => UserContract, (contract) => contract.user)
-  userContracts: UserContract;
+  @OneToOne(() => UserContract, (contract) => contract.contract)
+  userContract: UserContract;
 }
