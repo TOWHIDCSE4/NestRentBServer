@@ -53,4 +53,20 @@ export class MoServiceService {
       throw new NotFoundException(`Error in getting the service`);
     }
   }
+
+  async deleteByMoServiceId(moServiceId: number): Promise<MoService> {
+    try {
+      const service = await this.moServiceRepository.findOneById(moServiceId);
+      if (service === null)
+        throw new NotFoundException(
+          `Mo Service with ID ${moServiceId} not found`,
+        );
+      await this.moServiceRepository.remove(service);
+      return service;
+    } catch (error) {
+      throw new NotFoundException(
+        `Mo Service with ID ${moServiceId} not found`,
+      );
+    }
+  }
 }

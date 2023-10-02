@@ -2,7 +2,6 @@
 import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { cartdto } from '../dtos/update-cart-service-sell';
-import { userDto } from '../dtos/user-dto';
 import { CartServiceSellService } from '../services/cart-service-sell-service';
 
 @ApiTags('Cart-Services')
@@ -11,8 +10,8 @@ export class CartServiceSellController {
   constructor(private readonly cartService: CartServiceSellService) {}
 
   @Get()
-  async getAll(@Body() user: userDto) {
-    const services = await this.cartService.getAllByUserId(user);
+  async getAll() {
+    const services = await this.cartService.getAll();
 
     return {
       code: 200,
@@ -37,8 +36,11 @@ export class CartServiceSellController {
   }
 
   @Put(':cart_id')
-  async Update(@Param('id') id: number, @Body() cartservice: cartdto) {
-    const services = await this.cartService.update(id, cartservice);
+  async Update(
+    @Param('cart_id') cart_id: number,
+    @Body() cartservice: cartdto,
+  ) {
+    const services = await this.cartService.update(cart_id, cartservice);
 
     return {
       code: 200,
