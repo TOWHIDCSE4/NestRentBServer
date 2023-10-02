@@ -46,7 +46,7 @@ export class ContractController {
   @Get(':id')
   async getContractById(
     @Param('id') id: string,
-    @Param('phone_number') phone_number: string,
+    @Query('phone_number') phone_number: string,
     @Req() request: Request,
   ) {
     const renterPhoneNumber = phone_number; // Assuming you have user information in the request
@@ -86,7 +86,7 @@ export class ContractController {
   @Delete(':id')
   async contractDelete(
     @Param('id') id: string,
-    @Param('phone_number') phone_number: string,
+    @Query('phone_number') phone_number: string,
     @Req() request: Request,
   ) {
     const renterPhoneNumber = phone_number; // Assuming you have user information in the request

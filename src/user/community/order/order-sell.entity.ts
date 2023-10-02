@@ -2,7 +2,7 @@
 
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('order_service_sell')
+@Entity('order_service_sells')
 export class OrderServiceSell {
   @PrimaryGeneratedColumn()
   id: number;

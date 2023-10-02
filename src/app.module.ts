@@ -57,7 +57,7 @@ import { UtilsModule } from './utils/utils.module';
         UserContract,
         OrderServiceSell,
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     AuthModule,
     UtilsModule,
