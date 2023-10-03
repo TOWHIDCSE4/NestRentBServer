@@ -1,7 +1,8 @@
 // order.controller.ts
 
-import { Controller, Get, Query, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { OrderSellSendDto } from './dto/order-sell-send.dto';
 import { OrderQueryDto } from './dto/order-service-sell.dto';
 import { OrderService } from './order-sell.service';
 
@@ -26,5 +27,19 @@ export class OrderController {
       msg: 'THÀNH CÔNG',
       data: allOrders,
     };
+  }
+
+  @Post('send')
+  async send(
+    @Body() query: OrderSellSendDto,
+    @Request() request,
+  ): Promise<any> {
+    const allOrders = await this.orderService.sendCart(
+      query.createOrder.userId,
+      query.createOrder,
+      query.address,
+    );
+
+    return allOrders;
   }
 }
