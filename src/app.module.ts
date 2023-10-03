@@ -21,6 +21,7 @@ import { ContractModule } from './user/community/contract/contract.module';
 import { Contract } from './user/community/contract/entities/contract.entity';
 import { Motel } from './user/community/contract/entities/motel.entity';
 import { UserContract } from './user/community/contract/entities/user-contracts.entity';
+import { AddressAddition } from './user/community/entity/address-addition.entity';
 import { ItemCartServiceSell } from './user/community/entity/item-service-sell-entity';
 import { LineItemServiceSell } from './user/community/entity/line_item_service_sell.entity';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
@@ -56,6 +57,7 @@ import { UtilsModule } from './utils/utils.module';
         Contract,
         UserContract,
         OrderServiceSell,
+        AddressAddition,
       ],
       synchronize: false,
     }),

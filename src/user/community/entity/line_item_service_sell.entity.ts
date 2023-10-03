@@ -2,27 +2,26 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-import { User } from '../../../auth/entities/user.entity';
-import { ServiceSells } from '../../../service-sell/entities/service-sell.entity';
 
 @Entity('line_item_service_sells')
 export class LineItemServiceSell {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
   id: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', name: 'category_service_sell_id' })
   categoryServiceSell_id: number;
 
-  @ManyToOne(() => User, { eager: true }) // Define the relationship with the User entity
-  user: User;
+  @Column({ type: 'bigint', name: 'user_id' })
+  user_id: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', name: 'order_service_sell_id' })
   orderServiceSell_id: number;
+
+  @Column({ type: 'bigint', name: 'service_sell_id' })
+  service_sell_id: number;
 
   @Column({ default: 1 })
   quantity: number;
@@ -32,9 +31,6 @@ export class LineItemServiceSell {
 
   @Column('longtext', { nullable: true })
   images: string | null;
-
-  @ManyToOne(() => ServiceSells, { eager: true }) // Define the relationship with the ServiceSell entity
-  serviceSell: ServiceSells;
 
   @Column({ default: 0 })
   total_price: number;

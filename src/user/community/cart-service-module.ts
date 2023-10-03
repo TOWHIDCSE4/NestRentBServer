@@ -4,11 +4,17 @@ import { User } from '../../auth/entities/user.entity';
 import { ServiceSells } from '../../service-sell/entities/service-sell.entity';
 import { CartServiceSellController } from './controllers/cart-service-sell-controller';
 import { ItemCartServiceSell } from './entity/item-service-sell-entity';
+import { OrderServiceSell } from './order/order-sell.entity';
 import { CartServiceSellService } from './services/cart-service-sell-service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ItemCartServiceSell, User, ServiceSells]),
+    TypeOrmModule.forFeature([
+      ItemCartServiceSell,
+      User,
+      ServiceSells,
+      OrderServiceSell,
+    ]),
   ],
   controllers: [CartServiceSellController],
   providers: [CartServiceSellService],
