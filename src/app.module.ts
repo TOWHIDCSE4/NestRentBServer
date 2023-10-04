@@ -26,6 +26,8 @@ import { ItemCartServiceSell } from './user/community/entity/item-service-sell-e
 import { LineItemServiceSell } from './user/community/entity/line_item_service_sell.entity';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
+import { Renter } from './user/manage/entities/renter.entity';
+import { renterModule } from './user/manage/renter.module';
 import { UtilsModule } from './utils/utils.module';
 
 @Module({
@@ -58,8 +60,9 @@ import { UtilsModule } from './utils/utils.module';
         UserContract,
         OrderServiceSell,
         AddressAddition,
+        Renter,
       ],
-      synchronize: false,
+      synchronize: true,
     }),
     AuthModule,
     UtilsModule,
@@ -69,6 +72,7 @@ import { UtilsModule } from './utils/utils.module';
     CartServiceModule,
     ContractModule,
     OrderSellModule,
+    renterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
