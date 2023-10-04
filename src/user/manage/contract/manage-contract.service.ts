@@ -102,7 +102,62 @@ export class ManageContractService {
       data: contracts,
     };
   }
-  catch(error) {
-    throw new Error('Error while fetching contracts: ' + error.message);
+
+  public async getContract(
+    contractId: number,
+    userId: number,
+    isAdmin: boolean,
+  ) {
+    if (!isAdmin) {
+      // Check if the user has access to this contract
+      const hasAccess = await this.contractRepository
+        .createQueryBuilder('contract')
+        .where('contract.id = :contractId', { contractId })
+        .andWhere((qb) => {
+          const subQuery = qb
+            .subQuery()
+            .select('motel.id')
+            .from('motel', 'motel')
+            .innerJoin(
+              'connect_manage_motels',
+              'connect_manage_motels.motel_id',
+              'motel.id',
+            )
+            .innerJoin(
+              'supporter_manage_towers',
+              'supporter_manage_towers.id',
+              'connect_manage_motels.supporter_manage_tower_id',
+            )
+            .where('supporter_manage_towers.supporter_id = :userId', {
+              userId: userId,
+            })
+            .getQuery();
+          return 'contract.motel_id IN ' + subQuery;
+        })
+        .getOne();
+
+      if (!hasAccess) {
+        return {
+          code: HttpStatus.NOT_FOUND,
+          success: false,
+          msg_code: 'NO_CONTRACT_EXISTS',
+          msg: 'Hợp đồng đã thanh lý hoặc không còn hiệu lực',
+        };
+      }
+    }
+
+    const contract = await this.contractRepository.findOne({
+      where: {
+        id: contractId,
+      },
+    });
+
+    return {
+      code: HttpStatus.OK,
+      success: true,
+      msg_code: 'SUCCESS',
+      msg: 'THÀNH CÔNG',
+      data: contract,
+    };
   }
 }
