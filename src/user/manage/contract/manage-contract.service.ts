@@ -108,7 +108,8 @@ export class ManageContractService {
     userId: number,
     isAdmin: boolean,
   ) {
-    if (!isAdmin) {
+    const admin = isAdmin.toString() == 'true';
+    if (!admin) {
       // Check if the user has access to this contract
       const hasAccess = await this.contractRepository
         .createQueryBuilder('contract')
@@ -116,21 +117,12 @@ export class ManageContractService {
         .andWhere((qb) => {
           const subQuery = qb
             .subQuery()
-            .select('motel.id')
-            .from('motel', 'motel')
+            .select('motels.id')
+            .from('motels', 'motels')
             .innerJoin(
               'connect_manage_motels',
               'connect_manage_motels.motel_id',
-              'motel.id',
             )
-            .innerJoin(
-              'supporter_manage_towers',
-              'supporter_manage_towers.id',
-              'connect_manage_motels.supporter_manage_tower_id',
-            )
-            .where('supporter_manage_towers.supporter_id = :userId', {
-              userId: userId,
-            })
             .getQuery();
           return 'contract.motel_id IN ' + subQuery;
         })
@@ -152,12 +144,83 @@ export class ManageContractService {
       },
     });
 
+    if (!contract) {
+      return {
+        code: HttpStatus.NOT_FOUND,
+        success: false,
+        msg_code: 'NO_CONTRACT_EXISTS',
+        msg: 'Hợp đồng đã thanh lý hoặc không còn hiệu lực',
+      };
+    }
+
     return {
       code: HttpStatus.OK,
       success: true,
       msg_code: 'SUCCESS',
       msg: 'THÀNH CÔNG',
       data: contract,
+    };
+  }
+
+  public async deleteContract(
+    contractId: number,
+    userId: number,
+    isAdmin: boolean,
+  ) {
+    let hasAccess;
+    if (!isAdmin) {
+      // Check if the user has access to this contract
+      hasAccess = await this.contractRepository
+        .createQueryBuilder('contract')
+        .where('contract.id = :contractId', { contractId })
+        .andWhere((qb) => {
+          const subQuery = qb
+            .subQuery()
+            .select('motel.id')
+            .from('motel', 'motel')
+            .innerJoin(
+              'connect_manage_motels',
+              'connect_manage_motels.motel_id',
+            )
+            .getQuery();
+          return 'contract.motel_id IN ' + subQuery;
+        })
+        .getOne();
+
+      if (!hasAccess) {
+        return {
+          code: HttpStatus.NOT_FOUND,
+          success: false,
+          msg_code: 'NO_CONTRACT_EXISTS',
+          msg: 'Hợp đồng đã thanh lý hoặc không còn hiệu lực',
+        };
+      }
+
+      if (hasAccess.status == 2) {
+        return {
+          code: HttpStatus.BAD_REQUEST,
+          success: false,
+          msg_code: 'UNABLE_REMOVE_CONTRACT_ACTIVE',
+          msg: 'Không thể xóa hợp đồng đang hoạt động',
+        };
+      }
+    }
+
+    hasAccess = await this.contractRepository.findOne({
+      where: {
+        id: contractId,
+      },
+    });
+
+    // Delete the contract
+    await this.contractRepository.delete(hasAccess.id);
+
+    return {
+      code: HttpStatus.OK,
+      success: true,
+      msg_code: 'SUCCESS',
+      msg: 'THÀNH CÔNG',
+      data: { idDeleted: hasAccess.id },
     };
   }
 }
