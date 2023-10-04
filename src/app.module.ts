@@ -26,6 +26,7 @@ import { ItemCartServiceSell } from './user/community/entity/item-service-sell-e
 import { LineItemServiceSell } from './user/community/entity/line_item_service_sell.entity';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
+import { ManageContractModule } from './user/manage/contract/manage-contract.module';
 import { Renter } from './user/manage/entities/renter.entity';
 import { renterModule } from './user/manage/renter.module';
 import { UtilsModule } from './utils/utils.module';
@@ -62,7 +63,7 @@ import { UtilsModule } from './utils/utils.module';
         AddressAddition,
         Renter,
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     AuthModule,
     UtilsModule,
@@ -73,6 +74,7 @@ import { UtilsModule } from './utils/utils.module';
     ContractModule,
     OrderSellModule,
     renterModule,
+    ManageContractModule,
   ],
   controllers: [AppController],
   providers: [AppService],
