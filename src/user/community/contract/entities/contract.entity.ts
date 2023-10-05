@@ -30,6 +30,9 @@ export class Contract {
   motel: Motel;
 
   @Column({ type: 'bigint', unsigned: true })
+  motel_id: number;
+
+  @Column({ type: 'bigint', unsigned: true })
   tower_id: number;
 
   @Column({ type: 'timestamp', nullable: true })

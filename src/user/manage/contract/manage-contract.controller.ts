@@ -1,5 +1,5 @@
 // service.controller.ts
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GetAllContractsRequest } from './dto/get-all-contract.dto';
 import { GetContractRequest } from './dto/get-contract.dto';
@@ -22,6 +22,19 @@ export class ManageContractController {
     @Query() getContractRequest: GetContractRequest,
   ) {
     const res = await this.manageContractService.getContract(
+      contractId,
+      getContractRequest.userId,
+      getContractRequest.isAdmin,
+    );
+    return res;
+  }
+
+  @Delete(':contractId')
+  async delete(
+    @Param('contractId') contractId: number,
+    @Query() getContractRequest: GetContractRequest,
+  ) {
+    const res = await this.manageContractService.deleteContract(
       contractId,
       getContractRequest.userId,
       getContractRequest.isAdmin,
