@@ -230,8 +230,8 @@ export class Tower {
   @Column({ type: 'tinyint', default: 0, name: 'has_mattress' })
   hasMattress: number;
 
-  @Column({ type: 'tinyint', default: 0, name: 'has_shoes_racks' })
-  hasShoesRacks: number;
+  @Column({ type: 'tinyint', default: 0, name: 'has_shoes_rasks' })
+  hasShoesRasks: number;
 
   @Column({ type: 'tinyint', default: 0, name: 'has_curtain' })
   hasCurtain: number;
