@@ -33,6 +33,7 @@ export class AdminBannerService {
       image_url,
       title,
       action_link,
+      created_at: new Date(),
     });
 
     return await this.bannerRepository.save(newBanner);
@@ -62,7 +63,7 @@ export class AdminBannerService {
     if (updateBannerDto.action_link !== undefined) {
       bannerExist.action_link = updateBannerDto.action_link;
     }
-
+    bannerExist.updated_at = new Date();
     return this.bannerRepository.save(bannerExist);
   }
 
