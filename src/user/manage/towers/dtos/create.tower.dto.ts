@@ -1,16 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('towers')
-export class Tower {
-  @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
-  id: number;
-
+export class CreateTowerDto {
   @Column({ type: 'bigint', name: 'user_id' })
   userId: number;
 
