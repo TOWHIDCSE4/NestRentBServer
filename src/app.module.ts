@@ -28,7 +28,9 @@ import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
 import { ManageContractModule } from './user/manage/contract/manage-contract.module';
 import { Renter } from './user/manage/entities/renter.entity';
+import { TowerMotel } from './user/manage/entities/tower-motel.entity';
 import { renterModule } from './user/manage/renter.module';
+import { TowerMotelModule } from './user/manage/tower-motel.module';
 import { Tower } from './user/manage/towers/entities/tower.entity';
 import { TowerModule } from './user/manage/towers/tower.module';
 import { UtilsModule } from './utils/utils.module';
@@ -65,6 +67,7 @@ import { UtilsModule } from './utils/utils.module';
         AddressAddition,
         Renter,
         Tower,
+        TowerMotel,
       ],
       synchronize: false,
     }),
@@ -79,6 +82,7 @@ import { UtilsModule } from './utils/utils.module';
     renterModule,
     ManageContractModule,
     TowerModule,
+    TowerMotelModule,
   ],
   controllers: [AppController],
   providers: [AppService],
