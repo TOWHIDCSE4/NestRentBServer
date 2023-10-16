@@ -1,12 +1,12 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { MsgCode } from '../../../shared/constants/message.constants';
-import { Motel } from '../../community/contract/entities/motel.entity';
+import { MsgCode } from '../../../../shared/constants/message.constants';
+import { Motel } from '../../../community/contract/entities/motel.entity';
+import { Tower } from '../../towers/entities/tower.entity';
 import { CreateTowerMotelDto } from '../dtos/create.tower-motel.dto';
 import { UpdateTowerMotelDto } from '../dtos/update-tower-motel.dto';
 import { TowerMotel } from '../entities/tower-motel.entity';
-import { Tower } from '../towers/entities/tower.entity';
 
 @Injectable()
 export class TowerMotelService {

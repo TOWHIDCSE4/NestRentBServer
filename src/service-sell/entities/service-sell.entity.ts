@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
-import { ItemCartServiceSell } from '../../user/community/entity/item-service-sell-entity';
+import { ItemCartServiceSell } from '../../user/community/cart-service-sell/entity/item-service-sell-entity';
 import { CategoryServiceSells } from './category-service-sells.entity';
 import { ViewerServiceSell } from './viewer-service-sell.entity';
 

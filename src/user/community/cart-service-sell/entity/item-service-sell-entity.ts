@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ServiceSells } from '../../../service-sell/entities/service-sell.entity';
+import { ServiceSells } from '../../../../service-sell/entities/service-sell.entity';
 
 @Entity('item_cart_service_sells')
 export class ItemCartServiceSell {
