@@ -24,6 +24,14 @@ import { ContractModule } from './user/community/contract/contract.module';
 import { Contract } from './user/community/contract/entities/contract.entity';
 import { Motel } from './user/community/contract/entities/motel.entity';
 import { UserContract } from './user/community/contract/entities/user-contracts.entity';
+import { AdminContact } from './user/community/home/entity/admin-contracts';
+import { AdminDiscoverItemUi } from './user/community/home/entity/admin-discover-item-ui.entity';
+import { AdminDiscoverUi } from './user/community/home/entity/admin-discover-ui';
+import { ConfigAdmin } from './user/community/home/entity/config-admin.entity';
+import { MoPost } from './user/community/home/entity/mo-post';
+import { MoPostFindMotel } from './user/community/home/entity/mo-post-find-motels';
+import { MoPostRoommate } from './user/community/home/entity/mo-post-roommate';
+import { HomeModule } from './user/community/home/home-module';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
 import { ManageContractModule } from './user/manage/contract/manage-contract.module';
@@ -68,6 +76,13 @@ import { UtilsModule } from './utils/utils.module';
         Renter,
         Tower,
         TowerMotel,
+        AdminDiscoverItemUi,
+        AdminDiscoverUi,
+        ConfigAdmin,
+        MoPost,
+        MoPostFindMotel,
+        MoPostRoommate,
+        AdminContact,
       ],
       synchronize: false,
     }),
@@ -83,6 +98,7 @@ import { UtilsModule } from './utils/utils.module';
     ManageContractModule,
     TowerModule,
     TowerMotelModule,
+    HomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
