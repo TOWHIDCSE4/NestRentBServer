@@ -10,7 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CreateTowerMotelDto } from '../dtos/create.tower-motel.dto';
 import { UpdateTowerMotelDto } from '../dtos/update-tower-motel.dto';
-import { TowerMotelService } from '../services/tower-motel.service';
+import { TowerMotelService } from '../service/tower-motel.service';
 
 @ApiTags('Tower Motel')
 @Controller('manage/tower_motels')
