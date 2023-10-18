@@ -1,6 +1,6 @@
 // service.controller.ts
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { LocationPostDto } from '../dtos/location-post.dto';
 import { HomeService } from '../services/home.service';
 
@@ -23,6 +23,36 @@ export class HomeController {
   }
 
   @Get('home_app/search')
+  @ApiQuery({ name: 'type_motel', required: false })
+  @ApiQuery({ name: 'price_from', required: false })
+  @ApiQuery({ name: 'price_to', required: false })
+  @ApiQuery({ name: 'is_verify', required: false })
+  @ApiQuery({ name: 'gender', required: false })
+  @ApiQuery({ name: 'descending', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'sort_by', required: false })
+  @ApiQuery({ name: 'province', required: false })
+  @ApiQuery({ name: 'district', required: false })
+  @ApiQuery({ name: 'wards', required: false })
+  @ApiQuery({ name: 'has_wc', required: false })
+  @ApiQuery({ name: 'has_wifi', required: false })
+  @ApiQuery({ name: 'has_park', required: false })
+  @ApiQuery({ name: 'has_window', required: false })
+  @ApiQuery({ name: 'has_security', required: false })
+  @ApiQuery({ name: 'has_free_move', required: false })
+  @ApiQuery({ name: 'has_own_owner', required: false })
+  @ApiQuery({ name: 'has_air_conditioner', required: false })
+  @ApiQuery({ name: 'has_water_heater', required: false })
+  @ApiQuery({ name: 'has_kitchen', required: false })
+  @ApiQuery({ name: 'has_fridge', required: false })
+  @ApiQuery({ name: 'has_washing_machine', required: false })
+  @ApiQuery({ name: 'has_mezzanine', required: false })
+  @ApiQuery({ name: 'has_bed', required: false })
+  @ApiQuery({ name: 'has_wardrobe', required: false })
+  @ApiQuery({ name: 'has_tivi', required: false })
+  @ApiQuery({ name: 'has_pet', required: false })
+  @ApiQuery({ name: 'has_balcony', required: false })
+  @ApiQuery({ name: 'search', required: false })
   async search(
     @Query('type_motel') typeMotel: string,
     @Query('price_from') priceFrom: number,
