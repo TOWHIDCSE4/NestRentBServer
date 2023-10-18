@@ -55,11 +55,12 @@ export class HomeService {
   }
 
   async homeService(province: string, district: string, limit: number) {
+    if (limit == undefined || limit == null) limit = 20;
     const outstandingMoPost = await this.moPostRepository
       .createQueryBuilder('mo_posts')
       .where('mo_posts.status = :status', { status: 2 })
       .orderBy('mo_posts.created_at', 'DESC')
-      .take(10)
+      .take(limit)
       .getMany();
 
     const newMoPost = await this.moPostRepository
@@ -72,7 +73,7 @@ export class HomeService {
           { district },
         );
       })
-      .take(10)
+      .take(limit)
       .getMany();
 
     const moPostFindMotels = await this.moPostFindMotelRepository
@@ -84,7 +85,7 @@ export class HomeService {
           province,
         }).orWhere('mo_post_find_motel.district = :district', { district });
       })
-      .take(10)
+      .take(limit)
       .getMany();
 
     const moPostFindRoommates = await this.moPostRoommateRepository
@@ -97,7 +98,7 @@ export class HomeService {
           { district },
         );
       })
-      .take(10)
+      .take(limit)
       .getMany();
 
     const banners = await this.adminBannerRepository
@@ -108,7 +109,7 @@ export class HomeService {
         'admin_banners.action_link',
       ])
       .orderBy('admin_banners.created_at', 'DESC')
-      .take(10)
+      .take(limit)
       .getRawMany();
 
     const adminContacts = await this.adminContactRepository.find({});
@@ -116,7 +117,7 @@ export class HomeService {
     const adminDiscovers = await this.adminDiscoverUiRepo
       .createQueryBuilder('admin_discover_ui')
       .orderBy('admin_discover_ui.created_at', 'DESC')
-      .take(10)
+      .take(limit)
       .getMany();
 
     const listServiceSell = await this.serviceSellRepository
@@ -127,7 +128,7 @@ export class HomeService {
         'service_sells.name',
       ])
       .orderBy('service_sells.created_at', 'DESC')
-      .take(10)
+      .take(limit)
       .getRawMany();
 
     const listCategoryServiceSell = await this.categoryServiceSellRepository
@@ -138,6 +139,7 @@ export class HomeService {
         'category_service_sells.image',
       ])
       .orderBy('category_service_sells.created_at', 'DESC')
+      .take(limit)
       .getRawMany();
 
     const data = {
@@ -231,6 +233,10 @@ export class HomeService {
     hasBalcony: boolean,
     search: string,
   ) {
+    if (limit == undefined || limit == null) {
+      limit = 20;
+    }
+
     if (limit >= 600 || limit < 1) {
       return {
         code: HttpStatus.BAD_REQUEST,
