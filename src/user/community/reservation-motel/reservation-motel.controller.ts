@@ -16,7 +16,7 @@ import { ReservationMotelUpdateDto } from './dtos/reservation-motel-update.dto';
 import { ReservationMotelService } from './reservation-motel.service';
 
 @ApiTags('Reservation Motel')
-@Controller('community/reservation_motel')
+@Controller('user/community/reservation_motel')
 export class ReservationMotelController {
   constructor(
     private readonly reservationMotelService: ReservationMotelService,
