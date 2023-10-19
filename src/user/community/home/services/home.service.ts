@@ -6,13 +6,13 @@ import { DBAdminBanner } from '../../../../admin/banner/entity/admin-banner.enti
 import { CategoryServiceSells } from '../../../../service-sell/entities/category-service-sells.entity';
 import { ServiceSells } from '../../../../service-sell/entities/service-sell.entity';
 import { Motel } from '../../contract/entities/motel.entity';
-import { AdminContact } from '../entity/admin-contracts';
+import { AdminContact } from '../entity/admin-contracts.entity';
 import { AdminDiscoverItemUi } from '../entity/admin-discover-item-ui.entity';
-import { AdminDiscoverUi } from '../entity/admin-discover-ui';
+import { AdminDiscoverUi } from '../entity/admin-discover-ui.entity';
 import { ConfigAdmin } from '../entity/config-admin.entity';
-import { MoPost } from '../entity/mo-post';
-import { MoPostFindMotel } from '../entity/mo-post-find-motels';
-import { MoPostRoommate } from '../entity/mo-post-roommate';
+import { MoPostFindMotel } from '../entity/mo-post-find-motels.entity';
+import { MoPostRoommate } from '../entity/mo-post-roommate.entity';
+import { MoPost } from '../entity/mo-post.entity';
 
 @Injectable()
 export class HomeService {
@@ -256,7 +256,7 @@ export class HomeService {
       });
     }
     if (isVerify !== undefined) {
-      queryBuilder = queryBuilder.andWhere('motels.is_verify = :isVerify', {
+      queryBuilder = queryBuilder.andWhere('motels.status = :isVerify', {
         isVerify,
       });
     }
@@ -394,12 +394,6 @@ export class HomeService {
         `motels.${sortBy}`,
         descending ? 'DESC' : 'ASC',
       );
-    }
-
-    if (search) {
-      queryBuilder = queryBuilder.andWhere(`motels.search_field LIKE :search`, {
-        search: `%${search}%`,
-      });
     }
 
     queryBuilder = queryBuilder.take(limit);
