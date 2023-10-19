@@ -24,16 +24,18 @@ import { ContractModule } from './user/community/contract/contract.module';
 import { Contract } from './user/community/contract/entities/contract.entity';
 import { Motel } from './user/community/contract/entities/motel.entity';
 import { UserContract } from './user/community/contract/entities/user-contracts.entity';
-import { AdminContact } from './user/community/home/entity/admin-contracts';
+import { AdminContact } from './user/community/home/entity/admin-contracts.entity';
 import { AdminDiscoverItemUi } from './user/community/home/entity/admin-discover-item-ui.entity';
-import { AdminDiscoverUi } from './user/community/home/entity/admin-discover-ui';
+import { AdminDiscoverUi } from './user/community/home/entity/admin-discover-ui.entity';
 import { ConfigAdmin } from './user/community/home/entity/config-admin.entity';
-import { MoPost } from './user/community/home/entity/mo-post';
-import { MoPostFindMotel } from './user/community/home/entity/mo-post-find-motels';
-import { MoPostRoommate } from './user/community/home/entity/mo-post-roommate';
+import { MoPostFindMotel } from './user/community/home/entity/mo-post-find-motels.entity';
+import { MoPostRoommate } from './user/community/home/entity/mo-post-roommate.entity';
+import { MoPost } from './user/community/home/entity/mo-post.entity';
 import { HomeModule } from './user/community/home/home-module';
 import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
+import { ReservationMotel } from './user/community/reservation-motel/entity/reservation-motel.entity';
+import { ReservationMotelModule } from './user/community/reservation-motel/reservation-motel.module';
 import { ManageContractModule } from './user/manage/contract/manage-contract.module';
 import { Renter } from './user/manage/renter/entities/renter.entity';
 import { renterModule } from './user/manage/renter/renter.module';
@@ -83,6 +85,7 @@ import { UtilsModule } from './utils/utils.module';
         MoPostFindMotel,
         MoPostRoommate,
         AdminContact,
+        ReservationMotel,
       ],
       synchronize: false,
     }),
@@ -99,6 +102,7 @@ import { UtilsModule } from './utils/utils.module';
     TowerModule,
     TowerMotelModule,
     HomeModule,
+    ReservationMotelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

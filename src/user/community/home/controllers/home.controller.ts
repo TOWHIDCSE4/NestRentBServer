@@ -17,7 +17,7 @@ export class HomeController {
   }
 
   @Get('home_app/discover_item/:discover_id')
-  async getDiscover(@Param('id') id: number) {
+  async getDiscover(@Param('discover_id') id: number) {
     const discover = await this.homeService.getDiscover(id);
     return discover;
   }
