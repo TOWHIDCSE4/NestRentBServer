@@ -11,11 +11,11 @@ export class CreateReservationMotelDto {
 
   status: number;
 
-  province: string;
+  province: number;
 
-  district: string;
+  district: number;
 
-  wards: string;
+  wards: number;
 
   note: string;
 

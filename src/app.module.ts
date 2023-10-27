@@ -16,8 +16,9 @@ import { ServiceSells } from './service-sell/entities/service-sell.entity';
 import { ViewerServiceSell } from './service-sell/entities/viewer-service-sell.entity';
 import { Service } from './service/entities/service.entity';
 import { ServiceModule } from './service/service.module';
+import { AddressAdditionModule } from './user/community/address-addition/address-addition.module';
+import { AddressAddition } from './user/community/address-addition/entity/address-addition.entity';
 import { CartServiceModule } from './user/community/cart-service-sell/cart-service-module';
-import { AddressAddition } from './user/community/cart-service-sell/entity/address-addition.entity';
 import { ItemCartServiceSell } from './user/community/cart-service-sell/entity/item-service-sell-entity';
 import { LineItemServiceSell } from './user/community/cart-service-sell/entity/line_item_service_sell.entity';
 import { ContractModule } from './user/community/contract/contract.module';
@@ -103,6 +104,7 @@ import { UtilsModule } from './utils/utils.module';
     TowerMotelModule,
     HomeModule,
     ReservationMotelModule,
+    AddressAdditionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
