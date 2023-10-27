@@ -27,15 +27,15 @@ export class ReservationMotelUpdateDto {
 
   @IsString()
   @IsOptional()
-  province?: string;
+  province?: number;
 
   @IsString()
   @IsOptional()
-  district?: string;
+  district?: number;
 
   @IsString()
   @IsOptional()
-  wards?: string;
+  wards?: number;
 
   @IsString()
   @IsOptional()

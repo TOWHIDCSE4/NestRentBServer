@@ -18,13 +18,13 @@ export class ReservationMotel {
   wards_name: string;
 
   @Column()
-  province: string;
+  province: number;
 
   @Column()
-  district: string;
+  district: number;
 
   @Column()
-  wards: string;
+  wards: number;
 
   @Column()
   status: number;

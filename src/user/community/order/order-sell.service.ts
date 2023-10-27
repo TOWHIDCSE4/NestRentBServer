@@ -4,7 +4,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import { Repository } from 'typeorm';
-import { AddressAddition } from '../cart-service-sell/entity/address-addition.entity';
+import { AddressAddition } from '../address-addition/entity/address-addition.entity';
 import { ItemCartServiceSell } from '../cart-service-sell/entity/item-service-sell-entity';
 import { LineItemServiceSell } from '../cart-service-sell/entity/line_item_service_sell.entity';
 import { AddressAdditionDTO } from './dto/address-addition.dto';
@@ -124,7 +124,7 @@ export class OrderService {
       };
     }
 
-    const order = await this.orderRepository.create({
+    const orderS: any = {
       user_id: userId,
       order_code: randomUUID().substr(0, 8),
       order_status: '0',
@@ -138,7 +138,9 @@ export class OrderService {
       province: addressDTO.province,
       district: addressDTO.district,
       wards: addressDTO.wards,
-    });
+    };
+
+    const order = await this.orderRepository.create(orderS);
 
     await this.createLineItems(order, cartItems.cart_items);
 
@@ -153,10 +155,7 @@ export class OrderService {
     };
   }
 
-  private async createLineItems(
-    order: OrderServiceSell,
-    cartItems: ItemCartServiceSell[],
-  ) {
+  private async createLineItems(order: any, cartItems: ItemCartServiceSell[]) {
     const lineItems: LineItemServiceSell[] = [];
 
     for (const cartItem of cartItems) {
@@ -180,7 +179,7 @@ export class OrderService {
     userId: number, // Assuming you have the user_id
   ) {
     const addressAddition = await this.addressRepository.findOne({
-      where: { userId: userId },
+      where: { user_id: userId },
     });
 
     if (addressAddition) {
@@ -188,7 +187,7 @@ export class OrderService {
         province: addressDTO.province,
         district: addressDTO.district,
         wards: addressDTO.district,
-        addressDetail: addressDTO.address_detail,
+        address_detail: addressDTO.address_detail,
         note: addressDTO.note,
       });
     } else {

@@ -154,12 +154,15 @@ export class ReservationMotelService {
           updateReservationDto.district ?? reservationMotelExist.district,
         wards: updateReservationDto.wards ?? reservationMotelExist.wards,
         note: updateReservationDto.note ?? reservationMotelExist.note,
-        province_name:
-          updateReservationDto.province ?? reservationMotelExist.province_name,
-        district_name:
-          updateReservationDto.district ?? reservationMotelExist.district_name,
-        wards_name:
-          updateReservationDto.wards ?? reservationMotelExist.wards_name,
+        province_name: updateReservationDto.province
+          ? updateReservationDto.province.toString()
+          : reservationMotelExist.province_name,
+        district_name: updateReservationDto.district
+          ? updateReservationDto.district.toString()
+          : reservationMotelExist.district_name,
+        wards_name: updateReservationDto.wards
+          ? updateReservationDto.wards.toString()
+          : reservationMotelExist.wards_name,
         address_detail:
           updateReservationDto.address_detail ??
           reservationMotelExist.address_detail,
