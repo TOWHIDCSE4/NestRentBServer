@@ -37,6 +37,8 @@ import { OrderServiceSell } from './user/community/order/order-sell.entity';
 import { OrderSellModule } from './user/community/order/order-sell.module';
 import { ReservationMotel } from './user/community/reservation-motel/entity/reservation-motel.entity';
 import { ReservationMotelModule } from './user/community/reservation-motel/reservation-motel.module';
+import { ManangeCommissionModule } from './user/manage/commission/commission.module';
+import { CollaboratorReferMotel } from './user/manage/commission/entity/collaborator-refer-motels.entity';
 import { ManageContractModule } from './user/manage/contract/manage-contract.module';
 import { Renter } from './user/manage/renter/entities/renter.entity';
 import { renterModule } from './user/manage/renter/renter.module';
@@ -87,6 +89,7 @@ import { UtilsModule } from './utils/utils.module';
         MoPostRoommate,
         AdminContact,
         ReservationMotel,
+        CollaboratorReferMotel,
       ],
       synchronize: false,
     }),
@@ -105,6 +108,7 @@ import { UtilsModule } from './utils/utils.module';
     HomeModule,
     ReservationMotelModule,
     AddressAdditionModule,
+    ManangeCommissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
